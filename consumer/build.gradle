@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenLocal()
+    maven { url 'target/dependencies' }
+}
+
+dependencies {
+    compile "com.acme:producer:$version"
+}
+
+tasks.register('javadocJar', Jar) {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+    dependsOn javadoc
+}
+
+tasks.register('sourcesJar', Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+    dependsOn classes
+}
+
+assemble.dependsOn javadocJar
+assemble.dependsOn sourcesJar
